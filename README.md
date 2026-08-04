@@ -4,16 +4,19 @@ This repo has the compose files to host things on a home lab
 
 You will need docker server to be installed on the server pc.
 
-## 1 - Decisions to be made early
+## Decisions to be made early
 - The linux distro to use
 - You NAS
 - Registering a Domain
 
-## 2 - NAS Decision
+## Distro Decision
+Don't use windows.
+
+## NAS Decision
 You can buy a Synology to run the nas or you can use Samba 
 to network share.
 
-## 3 - Domain/DNS
+## Domain/DNS Decision
 You can buy a domain and register it through cloudflare.
 The 'free' option is to use duck dns which is what this stack uses.
 I am personally avoiding the C-Names buy just adding an extra "{name here}-" at the start. 
