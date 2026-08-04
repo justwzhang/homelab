@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  mc:
+    image: itzg/minecraft-server:java21
+    container_name: atm10
+    restart: unless-stopped
+    stdin_open: true
+    tty: true 
+    ports:
+      - "25565:25565"     # Minecraft server
+      - "25575:25575"     # RCON
+
+    environment:
+      EULA: "TRUE"
+      TYPE: "NEOFORGE"
+      VERSION: "1.21.1"
+      NEOFORGE_VERSION: "21.1.234"
+      MEMORY: "10G" # do not go over 10 the garbage collector will shit itself
+      JVM_OPTS: "-XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M -XX:+UseStringDeduplication"
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: ""
+      RCON_PORT: "25575"
+      DIFFICULTY: "hard"
+      PVP: "false"
+      ALLOW_FLIGHT: "true"
+      SERVER_NAME: "All the Mons"
+      # Good quality-of-life settings
+      TZ: "America/New_York"
+      MAX_TICK_TIME: "-1"     # Prevents server freezing crashes
+      ENABLE_WHITELIST: "true"
+
+    # This is where your world & mods live
+    volumes:
+      - /srv/storage/NAS/minecraft-servers/atm-10:/data

@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    restart: always
+    ports:
+      - "9000:9000"
+      - "9443:9443"   # Optional HTTPS UI
+      - "8000:8000"   # Edge agent (optional)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Connect to local Docker
+      - portainer_data:/data                       # Persist Portainer data
+    environment:
+      - TZ=America/New_York   # Optional: set your timezone
+
+volumes:
+  portainer_data:
+
+networks:
+  portainer_network:
+    name: portainer_network

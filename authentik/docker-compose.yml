@@ -1,0 +1,90 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: authentik-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: authentik
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: authentik
+    volumes:
+      - /srv/storage/NAS/docker-meta/authentik/postgres:/var/lib/postgresql/data
+    networks:
+      - proxy
+
+  redis:
+    image: redis:7
+    container_name: authentik-redis
+    restart: unless-stopped
+    volumes:
+      - /srv/storage/NAS/docker-meta/authentik/redis:/data
+    networks:
+      - proxy
+
+  server:
+    image: ghcr.io/goauthentik/server:latest
+    container_name: authentik-server
+    restart: unless-stopped
+    command: server
+    environment:
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY}
+
+      AUTHENTIK_POSTGRESQL__HOST: postgres
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${POSTGRES_PASSWORD}
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+
+      AUTHENTIK_REDIS__HOST: redis
+
+      AUTHENTIK_HOST: ${AUTHENTIK_HOST}
+      AUTHENTIK_COOKIE_DOMAIN: ${AUTHENTIC_DOMAIN}
+
+    volumes:
+      - /srv/storage/NAS/docker-meta/authentik/media:/media
+      - /srv/storage/NAS/docker-meta/authentik/templates:/templates
+
+    networks:
+      - proxy
+
+    depends_on:
+      - postgres
+      - redis
+
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+
+      - traefik.http.routers.authentik.rule=Host(`auth-zhang-server-pc.duckdns.org`) # Change this to your domain (would match the AUTHENTIC_DOMAIN env variable)
+      - traefik.http.routers.authentik.entrypoints=websecure
+      - traefik.http.routers.authentik.tls.certresolver=le
+      - traefik.http.routers.authentik.service=authentik
+
+      - traefik.http.services.authentik.loadbalancer.server.port=9000
+
+  worker:
+    image: ghcr.io/goauthentik/server:latest
+    container_name: authentik-worker
+    restart: unless-stopped
+    command: worker
+    environment:
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY}
+
+      AUTHENTIK_POSTGRESQL__HOST: postgres
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${POSTGRES_PASSWORD}
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+
+      AUTHENTIK_REDIS__HOST: redis
+
+    volumes:
+      - /srv/storage/NAS/docker-meta/authentik/media:/media
+      - /srv/storage/NAS/docker-meta/authentik/templates:/templates
+
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

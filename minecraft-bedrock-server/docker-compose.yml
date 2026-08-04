@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  bedrock:
+    image: itzg/minecraft-bedrock-server:latest
+    container_name: minecraft-bedrock
+    restart: unless-stopped
+    stdin_open: true    # keep stdin open so you can attach
+    tty: true 
+
+    ports:
+      - "19132:19132/udp"
+      - "19132:19132/tcp"
+
+    environment:
+      TZ: "America/New_York"
+      GAMEMODE: "survival"
+      DIFFICULTY: "normal"
+      MAX_PLAYERS: "5"
+      SERVER_NAME: "Minecraft-Bedrock-Server"
+      WHITE_LIST: "true"
+      EULA: "TRUE"
+      LEVEL_NAME: "MyWorld"
+      ALLOW_CHEATS: "true"
+    volumes:
+      - /srv/NAS/minecraft-servers/Jada-Bedtock-Server:/data
