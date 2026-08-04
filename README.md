@@ -35,6 +35,8 @@ EX:
 ## Portainer
 This is what this stack uses to manage all docker containers. Make sure to deploy all containers using this instead of using the `docker compose up` in the console.
 
+
+To deploy a new service go to `stacks -> new stack -> web -> copy and past yaml`. Make sure to update the env variables.
 ## VPN
 You have several options like OpenVpn, Tailscale, Wireguard, Netbird. All allow you to tunnel your internet traffic back to you home to access hosted things like NAS and other services.
 
@@ -47,7 +49,7 @@ This stack uses authentik for OAUTH/OIDC that leverages Traefik which is a rever
 
 ***This needs to be the first thing that gets deployed***
 
-To deploy a new service go to `stacks -> new stack -> web -> copy and past yaml`. Make sure to update the env variables.
+This is not entirely necessary but it is nice. If Netbird is not used then the Traefik options should be deleted.
 ## Readme Files
 
 Here are some links to other Readme files:
