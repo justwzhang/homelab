@@ -16,14 +16,31 @@ to network share.
 ## 3 - Domain/DNS
 You can buy a domain and register it through cloudflare.
 The 'free' option is to use duck dns which is what this stack uses.
+I am personally avoiding the C-Names buy just adding an extra "{name here}-" at the start. 
+
+EX: 
+|type|domain|
+| -------- | ------- |
+| normal| domain.duckdns.org|
+|netbird| netbird-domain.duckdns.org|
+|authentik| auth-domain.duckdns.org|
+
+
+
 [See DuckDNS Docs here](duckdns/README.md)
-
-## 4 - VPN
-You have several options like OpenVpn. This stack uses Netbird which comes with a reverse proxy built in. The set up is different than just a simple compose script so read the documentation [here](https://docs.netbird.io/selfhosted/selfhosted-quickstart). Make sure to set this up outside of portainer.
-
 
 ## Portainer
 This is what this stack uses to manage all docker containers. Make sure to deploy all containers using this instead of using the `docker compose up` in the console.
+
+## VPN
+You have several options like OpenVpn, Tailscale, Wireguard, Netbird. All allow you to tunnel your internet traffic back to you home to access hosted things like NAS and other services.
+
+The easiest to set up will probably be OpenVpn or Tailscale.
+
+This stack uses Netbird which comes with a reverse proxy built in. The set up is different than just a simple compose script so read the documentation [here](https://docs.netbird.io/selfhosted/selfhosted-quickstart). Make sure to set this up outside of portainer using `docker compose up`. To use these there has to be some domain associated with the netbird instance.
+
+## Authentik
+This stack uses authentik for OAUTH/OIDC that leverages Traefik which is a reverse proxy. This reverse proxy comes with Netbird
 
 ***This needs to be the first thing that gets deployed***
 
