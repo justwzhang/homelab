@@ -61,5 +61,8 @@ Here are some links to other Readme files:
 * [DuckDNS](duckdns/README.md)
 * [Booklore](booklore/README.md)
 * [Authentik](authentik/README.md)
+* [YouTrack](YouTrack/README.md)
+* [Beszel](beszel/README.md)
+
 
 
